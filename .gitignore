@@ -1,0 +1,30 @@
+# .NET Core build artifacts
+bin/
+obj/
+.vs/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.docker
+
+# Docker artifacts
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Database files
+*.mdf
+*.ldf
+
+# OS-specific files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,36 @@
+{
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PG_DB_USERNAME": "your_username",
+        "PG_DB_PASSWORD": "your_password"
+      },
+      "applicationUrl": "http://localhost:5000"
+    },
+    "Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PG_DB_USERNAME": "your_username",
+        "PG_DB_PASSWORD": "your_password"
+      },
+      "applicationUrl": "http://localhost:5000"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5000",
+        "PG_DB_PASSWORD": "your_password",
+        "PG_DB_USERNAME": "your_username"
+      },
+      "distributionName": ""
+    }
+  }
+}

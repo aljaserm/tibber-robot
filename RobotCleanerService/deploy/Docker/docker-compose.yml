@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  tibber-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${PG_DB_USERNAME}
+      POSTGRES_PASSWORD: ${PG_DB_PASSWORD}
+      POSTGRES_DB: ${PG_DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_DB_USERNAME} -d ${PG_DB_NAME}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  tibber:
+    build:
+      context: ../../.. 
+      dockerfile: RobotCleanerService/deploy/Docker/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - PG_DB_HOST=tibber-db
+      - PG_DB_USERNAME=${PG_DB_USERNAME}
+      - PG_DB_PASSWORD=${PG_DB_PASSWORD}
+      - PG_DB_NAME=${PG_DB_NAME}
+      - ASPNETCORE_URLS=http://+:5000
+    depends_on:
+      tibber-db:
+        condition: service_healthy
+    env_file:
+      - ../.env.docker
+
+volumes:
+  db_data:
