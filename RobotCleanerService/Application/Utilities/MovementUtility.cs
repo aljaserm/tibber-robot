@@ -1,6 +1,6 @@
-﻿using Application.Enums;
+﻿using Application.DTOs;
+using Application.Enums;
 using System;
-using System.Collections.Generic;
 
 namespace Application.Utilities
 {
@@ -10,32 +10,38 @@ namespace Application.Utilities
     public static class MovementUtility
     {
         /// <summary>
-        /// Moves the current position based on the direction.
+        /// Updates the boundaries based on the command.
         /// </summary>
-        /// <param name="direction">The direction to move.</param>
-        /// <param name="currentX">The current X coordinate (passed by reference).</param>
-        /// <param name="currentY">The current Y coordinate (passed by reference).</param>
-        /// <param name="uniquePositions">The set of unique positions visited.</param>
-        public static void Move(DirectionEnum direction, ref int currentX, ref int currentY, HashSet<(int, int)> uniquePositions)
+        /// <param name="command">The movement command.</param>
+        /// <param name="minX">The minimum X boundary.</param>
+        /// <param name="maxX">The maximum X boundary.</param>
+        /// <param name="minY">The minimum Y boundary.</param>
+        /// <param name="maxY">The maximum Y boundary.</param>
+        /// <param name="currentX">The current X coordinate.</param>
+        /// <param name="currentY">The current Y coordinate.</param>
+        public static void UpdateBoundaries(MovementCommandDto command, ref int minX, ref int maxX, ref int minY, ref int maxY, ref int currentX, ref int currentY)
         {
-            switch (direction)
+            switch (command.Direction)
             {
                 case DirectionEnum.North:
-                    currentY++;
+                    currentY += command.Steps;
+                    if (currentY > maxY) maxY = currentY;
                     break;
                 case DirectionEnum.East:
-                    currentX++;
+                    currentX += command.Steps;
+                    if (currentX > maxX) maxX = currentX;
                     break;
                 case DirectionEnum.South:
-                    currentY--;
+                    currentY -= command.Steps;
+                    if (currentY < minY) minY = currentY;
                     break;
                 case DirectionEnum.West:
-                    currentX--;
+                    currentX -= command.Steps;
+                    if (currentX < minX) minX = currentX;
                     break;
                 default:
-                    throw new InvalidOperationException($"Unsupported direction: {direction}");
+                    throw new InvalidOperationException($"Unsupported direction: {command.Direction}");
             }
-            uniquePositions.Add((currentX, currentY));
         }
     }
 }

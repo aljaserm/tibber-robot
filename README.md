@@ -16,6 +16,7 @@
   - [Using .NET CLI](#using-net-cli)
   - [Using Visual Studio](#using-visual-studio)
 - [Running Unit Tests](#running-unit-tests)
+- [Optimizations](#optimizations)
 - [Production Considerations](#production-considerations)
 - [Conclusion](#conclusion)
 
@@ -45,6 +46,10 @@ The Robot Cleaner Service is designed to fit into the Tibber Platform environmen
         |-- Models
     |-- Test
         |-- Application
+        |-- LargeJsonFiles
+            |-- robotcleanerpathheavy.json
+            |-- robotcleanerpathheavy_Double.json
+            |-- robotcleanerpathheavy_Tripple.json
         |-- Test.csproj
     |-- TibberRobotService.sln
     |-- TibberRobotService.sln.DotSettings.user
@@ -218,12 +223,26 @@ dotnet test
 2. In the Test Explorer, build the solution to discover all tests.
 3. Run the tests by clicking on the "Run All" button in the Test Explorer.
 
+## Optimizations
+
+### Handling Robot Movement Commands
+
+The handling of robot movement commands has been optimized to improve performance. Previously, a HashSet was used to store every unique position the robot visited. While this worked, it consumed a lot of memory and processing time, especially for large inputs.
+
+Now, instead of storing each position, the boundaries of the robot's movement are tracked. By keeping track of the minimum and maximum X and Y coordinates, the number of unique positions visited can be determined using this formula:
+
+```plaintext
+uniquePositions = (maxX - minX + 1) * (maxY - minY + 1)
+```
+
+This approach reduces memory usage and speeds up processing, making it much more efficient for handling large inputs.
+
 ## Production Considerations
 
 - Ensure that all sensitive information is stored securely and not hard-coded.
 - Implement logging and monitoring to track the application’s performance and errors in production.
 - Set up automated CI/CD pipelines to facilitate seamless deployment and scaling of the application.
-- Use container orchestration tools like Kubernetes for managing containers in a production environment.
+- Use Docker for managing containers in a production environment.
 
 ## Conclusion
 
